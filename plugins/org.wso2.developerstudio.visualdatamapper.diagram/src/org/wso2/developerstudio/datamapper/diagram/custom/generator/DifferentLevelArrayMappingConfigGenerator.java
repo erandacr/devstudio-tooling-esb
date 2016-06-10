@@ -198,6 +198,7 @@ public class DifferentLevelArrayMappingConfigGenerator extends AbstractMappingCo
             indexOfMostInnerForLoopBean = getMostInnerForLoopBeanFromList(operationForLoopBeansList);
             // find the most inner for loop bean to assign this operation
             getForLoopBeanList().get(indexOfMostInnerForLoopBean).getOperationList().add(mappingOperationIndex);
+            getForLoopBeanList().get(indexOfMostInnerForLoopBean).getIsThisIndexOperation().add(true);
             mappingOperationIndex++;
         }
         // All operations are now assign to ForLoopBean map. Transform
@@ -351,14 +352,21 @@ public class DifferentLevelArrayMappingConfigGenerator extends AbstractMappingCo
 
         // call operations and nested for loops
         List<Integer> operationsInForLoopList = forLoopBean.getOperationList();
-        for (Integer operationIndex : operationsInForLoopList) {
-            functionBuilder.append(
-                    getJSCommandForOperation(mappingOperationList.get(operationIndex), variableTypeMap, forLoopBean));
-        }
         List<Integer> nestedForLoopList = forLoopBean.getNestedForLoopList();
-        for (Integer nestedForLoopIndex : nestedForLoopList) {
-            functionBuilder.append(transformForLoopBeansToJS(getForLoopBeanList().get(nestedForLoopIndex),
-                    mappingOperationList, variableTypeMap));
+        List<Boolean> operationSequence = forLoopBean.getIsThisIndexOperation();
+        int operationsInForLoopListCounter = 0;
+        int nestedForLoopListCounter = 0;
+        
+        for (Boolean isOperation : operationSequence){
+        	if (isOperation) {
+        		functionBuilder.append(
+                      getJSCommandForOperation(mappingOperationList.get(operationsInForLoopList.get(operationsInForLoopListCounter)), variableTypeMap, forLoopBean));
+        		operationsInForLoopListCounter++;
+        	} else {
+        		functionBuilder.append(transformForLoopBeansToJS(getForLoopBeanList().get(nestedForLoopList.get(nestedForLoopListCounter)),
+                      mappingOperationList, variableTypeMap));
+        		nestedForLoopListCounter++;
+        	}
         }
 
         if (!ROOT_TAG.equals(forLoopBean.getVariableName())) {
@@ -569,9 +577,11 @@ public class DifferentLevelArrayMappingConfigGenerator extends AbstractMappingCo
             int parentIndex = getForLoopBeanMap().get(parentVariable);
             getForLoopBeanList().get(indexOfForLoopBean).setParentIndex(parentIndex);
             getForLoopBeanList().get(parentIndex).getNestedForLoopList().add(indexOfForLoopBean);
+            getForLoopBeanList().get(parentIndex).getIsThisIndexOperation().add(false);            
         } else {
             // root bean
             getForLoopBeanList().get(0).getNestedForLoopList().add(indexOfForLoopBean);
+            getForLoopBeanList().get(0).getIsThisIndexOperation().add(false);
         }
     }
 

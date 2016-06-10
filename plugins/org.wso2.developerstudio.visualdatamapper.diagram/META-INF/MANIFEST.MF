@@ -18,7 +18,14 @@ Bundle-ClassPath: .,
  lib/jackson-databind-2.7.2.jar,
  lib/jackson-core-2.7.2.jar,
  lib/jackson-annotations-2.7.2.jar,
- lib/json-simple-1.1.jar
+ lib/json-simple-1.1.jar,
+ lib/commons-beanutils-1.9.2.jar,
+ lib/commons-collections-3.2.2.jar,
+ lib/commons-logging-1.2.jar,
+ lib/ezmorph-1.0.6.jar,
+ lib/json-lib-2.4-jdk15.jar,
+ lib/xom-1.2.5.jar,
+ lib/commons-lang3-3.4.jar
 Bundle-Activator: org.wso2.developerstudio.datamapper.diagram.part.DataMapperDiagramEditorPlugin
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin

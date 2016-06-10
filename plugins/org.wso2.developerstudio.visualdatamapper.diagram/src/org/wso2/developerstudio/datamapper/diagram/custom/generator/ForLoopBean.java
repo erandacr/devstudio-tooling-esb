@@ -31,6 +31,7 @@ public class ForLoopBean {
     private int parentIndex;
     private List<String> arrayVariableListToInstantiate;
     private List<String> objectVariableListToInstantiate;
+    private List<Boolean> isThisIndexOperation;
 
     public ForLoopBean(String iterativeName, String variableName) {
         nestedForLoopList = new ArrayList<>();
@@ -39,6 +40,7 @@ public class ForLoopBean {
         objectVariableListToInstantiate = new ArrayList<>();
         this.iterativeName = iterativeName;
         this.variableName = variableName;
+        isThisIndexOperation = new ArrayList<>();
     }
 
     public List<String> getArrayVariableListToInstantiate() {
@@ -96,4 +98,8 @@ public class ForLoopBean {
     public void setParentIndex(int parentIndex) {
         this.parentIndex = parentIndex;
     }
+    
+    public List<Boolean> getIsThisIndexOperation() {
+		return isThisIndexOperation;
+	}
 }

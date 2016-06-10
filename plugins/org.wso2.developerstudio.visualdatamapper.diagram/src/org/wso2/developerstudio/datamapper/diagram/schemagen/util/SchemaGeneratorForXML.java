@@ -40,6 +40,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.XML;
 
+import net.sf.json.JSON;
+import net.sf.json.xml.XMLSerializer;
+
 public class SchemaGeneratorForXML extends SchemaGeneratorForJSON implements ISchemaGenerator {
 	private static final String TEMP_AVRO_GEN_LOCATION = "tempXSDGenLocation";
 	private static final String JAVA_IO_TMPDIR = "java.io.tmpdir";
@@ -53,15 +56,18 @@ public class SchemaGeneratorForXML extends SchemaGeneratorForJSON implements ISc
 
 	@Override
 	public String getSchemaContent(String content) throws IOException {
+		XMLSerializer xmlSerializer = new XMLSerializer();
+		content = "<a>"+content+"</a>";
+		xmlSerializer.setTrimSpaces(true);
+        JSON xmlJSONObj = xmlSerializer.read( content );
+//		JSONObject xmlJSONObj;
+//		try {
+//			xmlJSONObj = XML.toJSONObject(content);
+//		} catch (JSONException e) {
+//			throw new IOException(e.getMessage());
+//		}
 
-		JSONObject xmlJSONObj;
-		try {
-			xmlJSONObj = XML.toJSONObject(content);
-		} catch (JSONException e) {
-			throw new IOException(e.getMessage());
-		}
-
-		return super.getSchemaContent(xmlJSONObj.toString());
+		return super.getSchemaContent(xmlJSONObj.toString().replaceAll("@","").replaceAll("#text","content"));
 	}
 
 	/*
